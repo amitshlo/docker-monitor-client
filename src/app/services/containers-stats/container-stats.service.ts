@@ -1,43 +1,35 @@
-import {Injectable, EventEmitter}              from '@angular/core';
-import { Http, Response }          from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Subject} from 'rxjs/Subject';
+import {Injectable} from '@angular/core';
+import {Http} from '@angular/http';
+
+const hostsDataPath = 'http://localhost:1111/stats/getDataFromAllHosts';
 
 @Injectable()
 export class ContainersStatsService {
 
-  containers:any;
-  containersChanged:EventEmitter<any>;
-  private heroesUrl = 'http://localhost:1111/stats/getDataFromAllHosts';
+  private $hosts: Subject<any>;
 
-  constructor (private http: Http) {
-    this.containersChanged = new EventEmitter<any>();
-    this.containers = [];
+  constructor(private http: Http) {
+    this.$hosts = new BehaviorSubject<any>([]);
+    this.fetchData().subscribe((hostsData) => {
+      this.$hosts.next(hostsData);
+      Observable.interval(3000).switchMap(() => {
+        return this.fetchData();
+      }).subscribe((hostsData) => {
+        this.$hosts.next(hostsData);
+      });
+    })
   }
 
-  fetchData():void {
-    this.http.get(this.heroesUrl).subscribe((data) => {
-      this.containers = data.json();
-      this.containersChanged.emit(this.containers);
-    });
+  fetchData(): Observable<any> {
+    return this.http.get(hostsDataPath).map((res) => res.json());
   }
 
-  registerToContainersChange(callback:any) {
-    this.containersChanged.subscribe(callback);
+  getHosts() {
+    return this.$hosts;
   }
-
-  private handleError (error: Response | any) {
-    let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    } else {
-      errMsg = error.message ? error.message : error.toString();
-    }
-    console.error(errMsg);
-    return Observable.throw(errMsg);
-  }
-
 }

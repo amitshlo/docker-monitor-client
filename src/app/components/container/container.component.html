@@ -4,23 +4,29 @@
       <i class="container-status-icon fa {{container.state === 'running' ? 'fa-play' : 'fa-stop'}}"></i>
     </div>
     <md-card-title><b>{{container.name | hideFirstChar}}</b></md-card-title>
-    <md-card-subtitle>{{container.id | slice:0:12}}</md-card-subtitle>
+    <md-card-subtitle>
+      <div>{{container.status}}</div>
+      <div>{{container.id | slice:0:12}}</div>
+    </md-card-subtitle>
   </md-card-header>
   <md-card-content *ngIf="container.state === 'running'" class="stats-box">
-    <div class="stat-box {{getPercentBackground(container.stats.memoryPercent)}}">
-      <div class="stat-percent">{{container.stats.memoryPercent.toFixed(2)}}<small>%</small></div>
+    <div class="stat-box {{getPercentBackground(container.stats.memory)}}">
+      <div class="stat-percent">{{container.stats.memory.toFixed(2)}}<small>%</small></div>
       <div class="stat-title">RAM</div>
     </div>
-    <div class="stat-box {{getPercentBackground(container.stats.cpuPercent)}}">
-      <div class="stat-percent">{{container.stats.cpuPercent.toFixed(2)}}<small>%</small></div>
+    <div class="stat-box {{getPercentBackground(container.stats.cpu)}}">
+      <div class="stat-percent">{{container.stats.cpu.toFixed(2)}}<small>%</small></div>
       <div class="stat-title">CPU</div>
     </div>
   </md-card-content>
-  <md-card-actions>
+  <md-card-actions *ngIf="!waitingForAction">
     <div *ngIf="container.state === 'running'">
       <button md-button class="restart-button" (click)="dispatchAction('restart')">Restart Container!</button>
       <button md-button class="stop-button" (click)="dispatchAction('stop')">Stop Container!</button>
     </div>
     <button *ngIf="container.state !== 'running'" md-button class="start-button" (click)="dispatchAction('start')">Start Container!</button>
   </md-card-actions>
+  <md-card-footer *ngIf="waitingForAction">
+    Please wait...
+  </md-card-footer>
 </md-card>

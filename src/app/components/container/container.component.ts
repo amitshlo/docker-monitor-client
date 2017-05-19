@@ -13,15 +13,15 @@ import {MdDialog} from '@angular/material';
   templateUrl: 'container.component.html'
 })
 export class ContainerComponent {
+  @Input() host: string;
+  @Input() container: any;
+  waitingForAction: boolean;
 
+  constructor(private mdDialog: MdDialog,
+              private containersActionsService: ContainersActionsService) {
+  }
 
-  @Input() host:string;
-  @Input() container:any;
-
-  constructor(private mdDialog:MdDialog,
-              private containersActionsService:ContainersActionsService) {}
-
-  getPercentBackground(percent:number) {
+  getPercentBackground(percent: number) {
     if (percent < 20) {
       return 'percent-1';
     } else if (percent < 45) {
@@ -33,8 +33,8 @@ export class ContainerComponent {
     }
   }
 
-  dispatchAction(action:string):void {
-    this.mdDialog.open(InfoDialogComponent);
+  dispatchAction(action: string): void {
+    this.waitingForAction = true;
     this.containersActionsService.doAction(action, this.host, this.container.id);
   }
 

@@ -2,8 +2,9 @@ import {
   Component,
   OnInit
 } from '@angular/core';
-import { AppState } from './app.service';
+import {AppState} from './app.service';
 import {ContainersStatsService} from './services/containers-stats/container-stats.service';
+import {Subject} from "rxjs/Subject";
 
 @Component({
   selector: 'app',
@@ -14,21 +15,15 @@ import {ContainersStatsService} from './services/containers-stats/container-stat
 })
 export class AppComponent implements OnInit {
 
-  containers:any;
+  containers: Subject<any>;
 
   constructor(private appState: AppState,
-              private containersStatsService:ContainersStatsService) {
-    this.containers = [];
+              private containersStatsService: ContainersStatsService) {
+
   }
 
   ngOnInit() {
-    console.log('Initial App State', this.appState.state);
-    this.containersStatsService.registerToContainersChange(this.updateContainers.bind(this));
-    this.containersStatsService.fetchData();
-  }
-
-  updateContainers(data:any) {
-    this.containers = data.sort((a, b) => a.host > b.host);
+    this.containers = this.containersStatsService.getHosts();
   }
 
 }

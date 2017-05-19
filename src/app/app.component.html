@@ -1,3 +1,3 @@
 <div class="app-container">
-  <server *ngFor="let server of containers" [server]="server"></server>
+  <server *ngFor="let server of containers | async" [server]="server"></server>
 </div>
