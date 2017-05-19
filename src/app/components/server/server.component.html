@@ -1,0 +1,11 @@
+<md-card class="server-card">
+  <md-card-title>{{server.host}}</md-card-title>
+  <md-card-subtitle>Some description for server</md-card-subtitle>
+  <md-card-content>
+    <container *ngFor="let container of server.data"
+               [container]="container"
+               [host]="server.host">
+
+    </container>
+  </md-card-content>
+</md-card>

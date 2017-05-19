@@ -1,0 +1,59 @@
+:host {
+  margin: 10px;
+  flex-grow: 1;
+}
+
+.restart-button {
+  background-color: #00BCD4;
+}
+
+.start-button {
+  background-color: lightgreen;
+}
+
+.stop-button {
+  background-color: orange;
+}
+
+.container-status-icon {
+  padding-top: 5px;
+  font-size: 30px;
+}
+
+.stats-box {
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+}
+
+.stat-box {
+  width: 125px;
+  height: 125px;
+  margin: 0 10px;
+}
+
+.stat-percent {
+  margin-top: 40px;
+  font-size: 35px;
+}
+
+.stat-title {
+  font-size: 14px;
+}
+
+.percent-1 {
+  background-color: green;
+}
+
+.percent-2 {
+  background-color: yellow;
+}
+
+.percent-3 {
+  background-color: orange;
+}
+
+.percent-4 {
+  background-color: red;
+}

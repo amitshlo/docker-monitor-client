@@ -1,0 +1,8 @@
+:host {
+  margin: 10px;
+  flex-grow: 1;
+}
+
+.server-card {
+  background-color: whitesmoke;
+}
